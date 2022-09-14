@@ -1,2 +1,2 @@
 gql[requests]
-p2j
+jupytext

@@ -5,7 +5,9 @@ mkdir notebooks
 
 for FILE in ./*.py
 do
-  p2j $FILE
+  sed -i '1s/^/# +\n/' $FILE
+  jupytext --to ipynb $FILE
+  sed -i '1d' $FILE
 done
 
 mv *.ipynb notebooks
