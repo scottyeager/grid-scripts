@@ -1,1 +1,2 @@
-gql
+gql[requests]
+p2j

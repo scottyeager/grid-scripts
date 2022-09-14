@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+mkdir notebooks
+
+for FILE in ./*.py
+do
+  p2j $FILE
+done
+
+mv *.ipynb notebooks
