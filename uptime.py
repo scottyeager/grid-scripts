@@ -29,21 +29,39 @@ for node in nodes.split():
 
   result = client.execute(gql(query))
   uptimes = result['uptimeEvents']
-  print("Node id: " + str(node))
+
+  print()
+  print('Node ' + str(node))
+  print('----------------------')
+  print()
+
   for i, u in enumerate(uptimes[:-1]):
       #ud = int(uptimes[i + 1]['uptime']) - int(u['uptime'])
       td = int(uptimes[i + 1]['timestamp']) - int(u['timestamp'])
+      month = datetime.datetime.fromtimestamp(int(uptimes[i + 1]['timestamp'])).month
+      found = False
 
-      if int(uptimes[i + 1]['uptime']) < int(u['uptime']) and datetime.datetime.fromtimestamp(int(uptimes[i + 1]['timestamp'])).month in months:
+      if int(uptimes[i + 1]['uptime']) < int(u['uptime']) and month in months:
             print('Node went offline: ' + str(datetime.datetime.fromtimestamp(int(u['timestamp']))))
             print('Downtime: ' + str(td - int(uptimes[i + 1]['uptime'])))
             print()
+            found = True
 
       # Nodes should report every two hours, add a little wiggle room
-      elif td > 60 * 60 * 2.05 and datetime.datetime.fromtimestamp(int(uptimes[i + 1]['timestamp'])).month in months:
+      elif td > 60 * 60 * 2.05 and month in months and month not in (12,1):
         print('Delayed uptime report: ' + str(datetime.datetime.fromtimestamp(int(u['timestamp']))))
         print('Timestamp delta: ' + str(td))
         print()
+        found = True
 
+      # During December and January (through ~14), nodes reported every 8 hours
+      elif td > 60 * 60 * 8.05 and month in (12,1) and month in months:
+        print('Delayed uptime report: ' + str(datetime.datetime.fromtimestamp(int(u['timestamp']))))
+        print('Timestamp delta: ' + str(td))
+        print()
+        found = True
+
+  if not found:
+    print('No uptime irregularities found')
   print()
 
