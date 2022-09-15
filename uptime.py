@@ -35,11 +35,12 @@ for node in nodes.split():
   print('----------------------')
   print()
 
+  found = False
+
   for i, u in enumerate(uptimes[:-1]):
       #ud = int(uptimes[i + 1]['uptime']) - int(u['uptime'])
       td = int(uptimes[i + 1]['timestamp']) - int(u['timestamp'])
       month = datetime.datetime.fromtimestamp(int(uptimes[i + 1]['timestamp'])).month
-      found = False
 
       if int(uptimes[i + 1]['uptime']) < int(u['uptime']) and month in months:
             print('Node went offline: ' + str(datetime.datetime.fromtimestamp(int(u['timestamp']))))
