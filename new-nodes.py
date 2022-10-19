@@ -1,4 +1,4 @@
-import requests, time, csv
+import requests, time
 
 # Grid 3
 
